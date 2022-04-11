@@ -3,18 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Button, FormControl, InputLabel, Input } from '@material-ui/core';
 import Message from './Message';
 import firebase from 'firebase/compat/app';
-import { collection, getDocs } from 'firebase/firestore/lite';
-import db from './firebase';
-import { onSnapshot, query} from 'firebase/firestore';
+import {db} from './firebase';
 
 function App() {
   //useState:the temporary storage
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    { username: 'a', message: 'hello' },
-    { username: 'b', message: 'hey guys' },
-    { username: 'c', message: 'whats up' },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [username, setUserName] = useState('');
 
 
@@ -22,21 +16,13 @@ function App() {
     setUserName(prompt("enter user name"))
   }, [])
 
-  const getMessages = async (db) => {
-    const messageCollection = query(collection(db, 'messages'));
-    const messageSnapshot = await getDocs(messageCollection);
-    const messageList = messageSnapshot.docs.map(doc => doc.data());
-    return messageList;
-  }
-
-  useEffect((db) =>{
+  useEffect(() =>{
     //load the data once the page is loaded
     //note:the snapshot here will include all the data of the collection
     //basically its an array of object  
-    const messageCollection = query(collection(db, 'messages'));
-    onSnapshot(messageCollection, (querySnapshot) => {
-      setMessages(querySnapshot.docs.map((doc) => (doc.data)));
-    }) 
+    db.collection('messages').onSnapshot(snapshot =>{
+      setMessages(snapshot.docs.map(doc => doc.data()))
+    })
   },[])
 
   console.log(messages);
@@ -47,11 +33,12 @@ function App() {
     //the reason why we need to do this is:
     //form-submit will automatically refresh the page
     db.collection('messages').add({
-      messages:input,
+      message:input,
       username:username,
       timestamp:firebase.firestore.FieldValue.serverTimestamp(),
     })
     //message is now object 
+    //update the message
     setMessages([...messages, { username: username, message: input }]);
     setInput('');
   }
@@ -69,11 +56,11 @@ function App() {
       </form>
 
       {/* message themselves */}
-      {/* {
+      {
         messages.map(message => (
           <Message message={message} username={username} />
         ))
-      } */}
+      }
     </div>
   );
 }
