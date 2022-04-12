@@ -1,5 +1,6 @@
 # Getting Started with Messenger Clone
 ## install  
+```
   $npx create-react-app appName
   $npm install @material-ui/core --force (--force is optional)
   $npm start 
@@ -11,7 +12,8 @@
   $build
   $npm run build
   $firebase deploy
-  
+```  
+
 # Note
 1. !important gives component the first priority 
 2. margin-left: auto could be used to let the component to be right side 
