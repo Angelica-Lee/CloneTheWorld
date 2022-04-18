@@ -1,0 +1,48 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.home__header {
+  display: flex;
+  /* default is row */
+  align-items: center;
+  padding: 20px 30px;
+  justify-content: space-between;
+}
+
+.home__header a {
+  text-decoration: inherit;
+  margin-right: 20px;
+  color: black;
+  font-size:15px;
+}
+
+.home__header a:hover{
+  text-decoration: underline;
+}
+
+.home__right {
+  display: flex;
+  align-items: center;
+  min-width: 13vw;
+  justify-content: space-between;
+}
+
+/* > means that choose all the children element of this element*/
+.home__right > .MuiSvgIcon-root {
+  margin-right: 20px;
+}
+
+.home__body{
+  display: flex;
+  justify-content: center;
+}
+
+.home__body > img {
+  object-fit: contain;
+  height: 300px;
+}
+
+
